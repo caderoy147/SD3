@@ -1,56 +1,53 @@
-❌= abandon functionality 
-✓ = done!!! good job <3
+# BUG TRACKER APP
+### ❌= abandon functionality 
+### ✓ = done!!! good job <3
 
-[0/100]MAIN functionality deadline october 1
-[0/100]other functionality deadline november
-[0/100]auth end of november
-[0/100]UI 1st of december
+#### [0/100]MAIN functionality deadline october 1
+#### [0/100]other functionality deadline november
+#### [0/100]auth end of november
+#### [0/100]UI 1st of december
 
-Module A: Admin
+## Module A: Admin
 
-[]- User registration		
-[]- View User Information
-[]- Adds the project
-[]- Sets the Project Name and Project Code
-[]- Assigns a project manager to the project
-[]- Gives the project to the project manager
-[]- Assign members to a specific project
-[]- Updates status of the project (On-hold, Closed)
+1. [] User registration		
+2. [] View User Information
+3. [] Adds the project
+4. [] Sets the Project Name and Project Code
+5. [] Assigns a project manager to the project
+6. [] Gives the project to the project manager
+7. [] Assign members to a specific project
+8. [] Updates status of the project (On-hold, Closed)
 
-
-Module B: Project Manager
+## Module B: Project Manager
 		
-[]- User registration		
-[]- View User Information
-[]- Assign members to a specific project
-[]- Updates status of the project (Ongoing)
+9.  [] User registration		
+10. [] View User Information
+11. [] Assign members to a specific project
+12. [] Updates status of the project (Ongoing)
 		
-Module C: Developer
+## Module C: Developer
 
-[]- User registration		
-[]- View User Information
-[]- Fixes bug
-[]- Returns the bug-fixed project to the QA
+13. [] User registration		
+14. [] View User Information
+15. [] Fixes bug
+16. [] Returns the bug-fixed project to the QA
 
-Module D: Quality Tester (QA)
+## Module D: Quality Tester (QA)
 
-[]- User registration		
-[]- View User Information
-[]- Detects Bug
-[]- Passes the project to the developer for bug fixes
-
-
-admin: add proejct to the system
-sets the proj name, proj code 
-save
-
-admin then assigns a manager to the project
-save
-
-manager opens the project (tab/page)
-adds information on the project (start date, end date, technology used, type of project, members)
-save
+17. [] User registration		
+18. [] View User Information
+19. [] Detects Bug
+20. [] Passes the project to the developer for bug fixes
 
 
+##### admin: add proejct to the system
+ sets the proj name, proj code 
+ save
 
-project information: project code, start date and end date of the project, technology used, database, type of project (e-commerce, sales),
+#### admin then assigns a manager to the project
+ save
+
+#### manager opens the project (tab/page)
+ *adds information on the project (start date, end date, technology used, type of project, members) save
+
+#### project information: project code, start date and end date of the project, technology used, database, type of project (e-commerce, sales),
