@@ -4,7 +4,6 @@
 
 #### [0/100]other functionality deadline november
 #### [0/100]auth end of november
-#### [0/100]UI 1st of december
 
 ## Module A: Admin 
 1. [ ] User registration		
