@@ -44,7 +44,7 @@ const createNewBug = asyncHandler(async (req, res) => {
     }
 
     // Create and store the new user 
-    const bug = await Bug.create({ user, bugNumber, severity, description, bugName, environment, reproduction,actualResult })
+    const bug = await Bug.create({ user, bugNumber, severity, description,expectedResult, bugName, environment, reproduction,actualResult })
 
     if (bug) { // Created 
         return res.status(201).json({ message: 'New bug report created' })

@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const AutoIncrement = require('mongoose-sequence')(mongoose)
 
 const bugSchema = new mongoose.Schema(
   {
@@ -51,11 +50,4 @@ const bugSchema = new mongoose.Schema(
   timestamps: true
   }
 )
-
-bugSchema.plugin(AutoIncrement,{
-  inc_field:'bug',
-  id: 'bugNums',
-  start_seq: 500
-})
-
 module.exports = mongoose.model('Bug', bugSchema)
