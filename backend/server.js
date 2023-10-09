@@ -51,6 +51,7 @@ app.use('/', require('./routes/root'))
 app.use('/users',require('./routes/userRoutes'))
 
 app.use('/bugs',require('./routes/bugRoutes'))
+app.use('/teams', require('./routes/teamRoute'))
 
 app.all('*',(req,res)=>{
   res.status(404)
