@@ -5,6 +5,10 @@ const teamSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    projectname: {
+        type: String,
+        required: true
+    },
     teamdescription: {
         type: String,
         required: true
