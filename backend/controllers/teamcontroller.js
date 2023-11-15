@@ -65,6 +65,65 @@ const createTeam = async (req, res) => {
     }
 }
 
+const updateTeam = async (req, res) => {
+    const { id, teamname, projectname, teamdescription, developerList, qualityA } = req.body;
+
+    // Check if required fields are provided
+    if (!id || !teamname || !projectname || !teamdescription || !developerList || !qualityA) {
+        return res.status(400).json({ message: 'All fields are required' });
+    }
+
+    try {
+        // Find the team by ID
+        const team = await Team.findById(id);
+
+        // Check if the team exists
+        if (!team) {
+            return res.status(404).json({ message: 'Team not found' });
+        }
+
+        // Update team properties
+        team.projectname = projectname;
+        team.teamname = teamname;
+        team.teamdescription = teamdescription;
+
+        // Filter developerList to include only users with the "Developer" role
+        const developerIds = developerList.filter(async (developerId) => {
+            const user = await User.findById(developerId).exec();
+            return user && user.roles.includes('Developer');
+        });
+
+        // Check if all elements in developerList are valid users with the "Developer" role
+        if (developerIds.length !== developerList.length) {
+            return res.status(400).json({ message: 'Invalid users in developerList' });
+        }
+
+        // Update the developerList
+        team.developerList = developerIds;
+
+        // Update qualityA to include only users with the "Quality Assurance" role
+        const qualityAUser = await User.findById(qualityA).exec();
+        if (!qualityAUser || !qualityAUser.roles.includes('Quality Assurance')) {
+            return res.status(400).json({ message: 'Invalid user in qualityA' });
+        }
+
+        // Update qualityA
+        team.qualityA = qualityA;
+
+        // Save the updated team
+        const updatedTeam = await team.save();
+
+        if (updatedTeam) {
+            return res.status(200).json({ message: 'Team updated successfully' });
+        } else {
+            return res.status(500).json({ message: 'Internal server error' });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
 const deleteTeam = async (req, res) => {
     const { projectname } = req.body
 
@@ -84,27 +143,6 @@ const deleteTeam = async (req, res) => {
     res.status(204).send()
 }
 
-const updateTeam = async (req,res) => {
-    const {id, teamname, projectname, teamdescription, members} = req.body
-    //check if naa ba gyuy gi input si user
-    if(!id || !teamname || !projectname || !teamdescription || !members){
-        return res.status(400).json({message: `All fields are required`})
-    }
-    const team = await Team.findById(id)
-
-    //check if ni exist ba si team via id
-    if(!team){
-        res.status(400).json({message: `ID does not exist`})
-    }
-    
-    team.projectname = projectname
-    team.teamname = teamname
-    team.teamdescription = teamdescription
-    team.members = members
-
-    const updatedTeam = team.save()
-    res.json({message: `Team Updated`})
-}
 module.exports = {
     createTeam,
     getallTeam,

@@ -57,8 +57,49 @@ const deleteProfile = async (req, res) => {
     res.status(204).send()
 }
 
+const updateProfile = async (req, res) => {
+    const { id, fullName, age, mobile, location, zipCode, language, company } = req.body;
+
+    // Check if the 'id' field is provided
+    if (!id) {
+        return res.status(400).json({ message: 'Profile ID is required for updating' });
+    }
+
+    // Find the profile by ID
+    const profile = await Profile.findById(id);
+
+    // Check if the profile exists
+    if (!profile) {
+        return res.status(404).json({ message: 'Profile not found' });
+    }
+
+    // Update the profile fields if they are provided
+    if (fullName) profile.fullName = fullName;
+    if (age) profile.age = age;
+    if (mobile) profile.mobile = mobile;
+    if (location) profile.location = location;
+    if (zipCode) profile.zipCode = zipCode;
+    if (language) profile.language = language;
+    if (company) profile.company = company;
+
+    // Check if a file is uploaded and set the profilePic field
+    if (req.file) {
+        profile.profilePic = req.file.path;
+    }
+
+    // Save the updated profile
+    const updatedProfile = await profile.save();
+
+    if (updatedProfile) {
+        return res.status(200).json({ message: 'Profile updated successfully' });
+    } else {
+        return res.status(400).json({ message: 'Failed to update profile' });
+    }
+};
+
 module.exports = {
     viewProfile,
     createProfile,
-    deleteProfile
+    deleteProfile,
+    updateProfile
 }
