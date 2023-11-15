@@ -7,5 +7,5 @@ router.route('/')
  .post(upload.single('profilePic'), profileController.createProfile)
  .get(profileController.viewProfile)
  .delete(profileController.deleteProfile)
- 
+ .patch(upload.single('profilePic'), profileController.updateProfile)
 module.exports = router
