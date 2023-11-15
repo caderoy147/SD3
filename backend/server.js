@@ -50,8 +50,11 @@ app.use('/', require('./routes/root'))
 
 app.use('/users',require('./routes/userRoutes'))
 
+app.use('/uploads', express.static('uploads'));
 app.use('/bugs',require('./routes/bugRoutes'))
 app.use('/teams', require('./routes/teamRoute'))
+app.use('/profile', require('./routes/profileRoutes'))
+
 
 app.all('*',(req,res)=>{
   res.status(404)

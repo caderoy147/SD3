@@ -13,12 +13,16 @@ const teamSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    members: [{
+    qualityA: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'User'
-    }]
-        
+    },
+    developerList: [{
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User'
+    }],    
 }, {timestamps: true})
 
 module.exports = mongoose.model('Team', teamSchema)
