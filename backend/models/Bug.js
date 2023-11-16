@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const { v4: uuidv4 } = require('uuid');
 
 const bugSchema = new mongoose.Schema(
   {
@@ -7,9 +8,11 @@ const bugSchema = new mongoose.Schema(
       required: true,
       ref: 'User'
     },
-    bugNumber:{
+    bugNumber: {
       type: String,
-      required: true
+      default: uuidv4(),
+      unique: true,
+      required: true,
     },
     severity:{
       type: String,
@@ -42,10 +45,15 @@ const bugSchema = new mongoose.Schema(
     status:{
       type: String,
       default:"OPEN"
+    },
+    remarks:{
+      type: String,
+      default: "In Progress"
+    },
+    bugProof:{
+      type: String
     }
-
   },
-
   {
   timestamps: true
   }
