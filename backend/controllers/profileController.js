@@ -7,10 +7,10 @@ const viewProfile = async(req, res) =>{
 }
 
 const createProfile = async (req, res) => {
-    const { fullName, age, mobile, location, zipCode, language, company } = req.body;
+    const { fullName, age, mobile, location, zipCode, language, company, profilePic } = req.body;
 
     // Check if required fields are provided
-    if (!fullName || !age || !mobile || !location || !zipCode || !language || !company) {
+    if (!fullName || !age || !mobile || !location || !zipCode || !language || !company || !profilePic) {
         res.status(400).json({ message: 'All fields are required' });
     }
 
@@ -21,14 +21,9 @@ const createProfile = async (req, res) => {
         location,
         language,
         company,
-        zipCode
+        zipCode,
+        profilePic
     };
-
-    // Check if a file is uploaded and set the profilePic field
-    if (req.file) {
-        profileData.profilePic = req.file.path;
-    }
-
     const profile = await Profile.create(profileData);
 
     if (profile) {
@@ -39,10 +34,10 @@ const createProfile = async (req, res) => {
 };
 
 const deleteProfile = async (req, res) => {
-    const { fullName } = req.body
+    const { id } = req.body
 
     //if walay gi input
-    if(!fullName){
+    if(!id){
         return res.status(400).json({message: `ID is required.`})
     }
 
@@ -54,11 +49,11 @@ const deleteProfile = async (req, res) => {
     }
     //kung naa kay magdelete ta sa selected nga project via projectname
     await profile.deleteOne()
-    res.status(204).send()
+    res.status(204).json({ message: 'Profile Deleted.'})
 }
 
 const updateProfile = async (req, res) => {
-    const { id, fullName, age, mobile, location, zipCode, language, company } = req.body;
+    const { id, fullName, age, mobile, location, zipCode, language, company, profilePic } = req.body;
 
     // Check if the 'id' field is provided
     if (!id) {
@@ -81,12 +76,8 @@ const updateProfile = async (req, res) => {
     if (zipCode) profile.zipCode = zipCode;
     if (language) profile.language = language;
     if (company) profile.company = company;
-
-    // Check if a file is uploaded and set the profilePic field
-    if (req.file) {
-        profile.profilePic = req.file.path;
-    }
-
+    if (profilePic) profile.profilePic = profilePic;
+ 
     // Save the updated profile
     const updatedProfile = await profile.save();
 

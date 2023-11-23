@@ -4,8 +4,8 @@ const profileController = require('../controllers/profileController')
 const upload = require("../middleware/upload")
 
 router.route('/')
- .post(upload.single('profilePic'), profileController.createProfile)
+ .post(profileController.createProfile)
  .get(profileController.viewProfile)
  .delete(profileController.deleteProfile)
- .patch(upload.single('profilePic'), profileController.updateProfile)
+ .patch(profileController.updateProfile)
 module.exports = router
