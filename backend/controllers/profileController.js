@@ -1,10 +1,25 @@
 const Profile = require('../models/Profile')
 const User = require('../models/User')
 
-const viewProfile = async(req, res) =>{
-    const profile = await Profile.find().populate('fullName').lean()
-    res.json(profile)
-}
+const viewProfile = async (req, res) => {
+    try {
+        const profiles = await Profile.find().lean();
+
+        // Update image paths to include full URL with forward slashes
+        const profilesWithFullUrl = profiles.map(profile => {
+            return {
+                ...profile,
+                profilePic: `${req.protocol}://${req.get('host')}/${profile.profilePic.replace(/\\/g, '/')}`,
+            };
+        });
+
+        res.json(profilesWithFullUrl);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
 
 const createProfile = async (req, res) => {
     const { fullName, age, mobile, location, zipCode, language, company } = req.body;
