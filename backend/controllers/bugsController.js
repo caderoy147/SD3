@@ -29,39 +29,45 @@ const getAllBugs = asyncHandler(async (req, res) => {
 // @route POST /bugs
 // @access Private
 const createNewBug = asyncHandler(async (req, res) => {
-    const { user, bugNumber, severity, description, expectedResult, bugName, environment,  reproduction,actualResult} = req.body
-
+    const { user, severity, description, expectedResult, bugName, environment, reproduction, actualResult } = req.body;
+  
     // Confirm data
-    if (!user || !bugNumber || !severity || !description || !expectedResult || !bugName || !environment || !reproduction || !actualResult) {
-        return res.status(400).json({ message: 'All fields are required' })
+    if (!user || !severity || !description || !expectedResult || !bugName || !environment || !reproduction || !actualResult) {
+      return res.status(400).json({ message: 'All fields are required' });
+    }
+  
+    let bugData = {
+        user, 
+        severity, 
+        description, 
+        expectedResult, 
+        bugName, 
+        environment, 
+        reproduction, 
+        actualResult
     }
 
-    // Check for duplicate title
-    const duplicate = await Bug.findOne({ bugNumber }).lean().exec()
-
-    if (duplicate) {
-        return res.status(409).json({ message: 'Duplicate bug number' })
+    if(req.file){
+        bugData.bugProof = req.file.path;
     }
-
-    // Create and store the new user 
-    const bug = await Bug.create({ user, bugNumber, severity, description,expectedResult, bugName, environment, reproduction,actualResult })
-
-    if (bug) { // Created 
-        return res.status(201).json({ message: 'New bug report created' })
+    // Create and store the new bug
+    const bug = await Bug.create(bugData);
+  
+    if (bug) { // Created
+      return res.status(201).json({ message: 'New bug report created' });
     } else {
-        return res.status(400).json({ message: 'Invalid bug report data received' })
+      return res.status(400).json({ message: 'Invalid bug report data received' });
     }
-
-})
+  });
 
 // @desc Update a note
 // @route PATCH /notes
 // @access Private
 const updateBug = asyncHandler(async (req, res) => {
-    const { id, user, bugNumber, severity, description, expectedResult, bugName, environment, reproduction, actualResult } = req.body;
+    const { id, user, severity, description, expectedResult, bugName, environment, reproduction, actualResult } = req.body;
 
     // Confirm data
-    if (!id || !user || !bugNumber || !severity || !description || !expectedResult || !bugName || !environment || !reproduction || !actualResult) {
+    if (!id || !user || !severity || !description || !expectedResult || !bugName || !environment || !reproduction || !actualResult) {
         return res.status(400).json({ message: 'All fields are required' });
     }
 
@@ -73,15 +79,16 @@ const updateBug = asyncHandler(async (req, res) => {
     }
 
     // Check for duplicate bug number (if you want to prevent duplicates)
-    const duplicate = await Bug.findOne({ bugNumber }).lean().exec();
+    // You should get the existing bugNumber from the database
+    const existingBug = await Bug.findById(id).lean().exec();
+    const duplicate = await Bug.findOne({ bugNumber: existingBug.bugNumber }).lean().exec();
 
-    if (duplicate && duplicate?._id.toString() !== id) {
+    if (duplicate && duplicate._id.toString() !== id) {
         return res.status(409).json({ message: 'Duplicate bug number' });
     }
 
     // Update bug fields
     bug.user = user;
-    bug.bugNumber = bugNumber;
     bug.severity = severity;
     bug.description = description;
     bug.expectedResult = expectedResult;
@@ -90,10 +97,13 @@ const updateBug = asyncHandler(async (req, res) => {
     bug.reproduction = reproduction;
     bug.actualResult = actualResult;
 
+    if(req.file){
+        bug.bugProof = req.file.path;
+    }
     const updatedBug = await bug.save();
 
     res.json(`'${updatedBug.bugNumber}' updated`);
-})
+});
 
 // @desc Delete a bug
 // @route DELETE /bugs

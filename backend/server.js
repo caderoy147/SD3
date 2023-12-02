@@ -48,6 +48,8 @@ app.use('/', express.static(path.join(__dirname, 'public')))
 
 app.use('/', require('./routes/root'))
 
+app.use('/auth',require('./routes/authRoutes')) // atuh passwords and stuff views
+
 app.use('/users',require('./routes/userRoutes'))
 
 app.use('/uploads', express.static('uploads'));
