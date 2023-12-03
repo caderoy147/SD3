@@ -7,10 +7,10 @@ const viewProfile = async(req, res) =>{
 }
 
 const createProfile = async (req, res) => {
-    const { fullName, age, mobile, location, zipCode, language, company, profilePic } = req.body;
+    const { fullName, age, mobile, location, zipCode, language, company} = req.body;
 
     // Check if required fields are provided
-    if (!fullName || !age || !mobile || !location || !zipCode || !language || !company || !profilePic) {
+    if (!fullName || !age || !mobile || !location || !zipCode || !language || !company) {
         res.status(400).json({ message: 'All fields are required' });
     }
 
@@ -21,9 +21,12 @@ const createProfile = async (req, res) => {
         location,
         language,
         company,
-        zipCode,
-        profilePic
+        zipCode
     };
+
+    if (req.file) {
+        profileData.profilePic = req.file.path;
+    }
     const profile = await Profile.create(profileData);
 
     if (profile) {
@@ -42,7 +45,7 @@ const deleteProfile = async (req, res) => {
     }
 
     //if naa ba gyud ang team
-    const profile = Profile.findOne({fullName})
+    const profile = Profile.findOne({id})
 
     if(!profile){
         return res.status(400).json({message: `Project does not exist.`})
@@ -53,38 +56,34 @@ const deleteProfile = async (req, res) => {
 }
 
 const updateProfile = async (req, res) => {
-    const { id, fullName, age, mobile, location, zipCode, language, company, profilePic } = req.body;
+    const { id, fullName, age, mobile, location, zipCode, language, company } = req.body;
 
-    // Check if the 'id' field is provided
-    if (!id) {
-        return res.status(400).json({ message: 'Profile ID is required for updating' });
+    // Check if required fields are provided
+    if (!id || !fullName || !age || !mobile || !location || !zipCode || !language || !company) {
+        return res.status(400).json({ message: 'All fields are required' });
     }
 
-    // Find the profile by ID
-    const profile = await Profile.findById(id);
+    let profileData = {
+        fullName,
+        age,
+        mobile,
+        location,
+        language,
+        company,
+        zipCode,
+    };
 
-    // Check if the profile exists
-    if (!profile) {
-        return res.status(404).json({ message: 'Profile not found' });
+    // Check if a file is uploaded and set the profilePic field
+    if (req.file) {
+        profileData.profilePic = req.file.path;
     }
 
-    // Update the profile fields if they are provided
-    if (fullName) profile.fullName = fullName;
-    if (age) profile.age = age;
-    if (mobile) profile.mobile = mobile;
-    if (location) profile.location = location;
-    if (zipCode) profile.zipCode = zipCode;
-    if (language) profile.language = language;
-    if (company) profile.company = company;
-    if (profilePic) profile.profilePic = profilePic;
- 
-    // Save the updated profile
-    const updatedProfile = await profile.save();
+    const updatedProfile = await Profile.findByIdAndUpdate(id, profileData, { new: true });
 
     if (updatedProfile) {
-        return res.status(200).json({ message: 'Profile updated successfully' });
+        return res.status(200).json({ message: 'Profile updated', profile: updatedProfile });
     } else {
-        return res.status(400).json({ message: 'Failed to update profile' });
+        return res.status(404).json({ message: 'Profile not found' });
     }
 };
 
