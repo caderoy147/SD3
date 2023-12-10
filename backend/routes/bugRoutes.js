@@ -2,6 +2,9 @@ const express = require('express')
 const router = express.Router()
 const bugsController = require('../controllers/bugsController')
 const upload = require("../middleware/upload")
+const verifyJWT = require('../middleware/verifyJWT')
+
+router.use(verifyJWT)
 
 router.route('/')
     .get(bugsController.getAllBugs)

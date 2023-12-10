@@ -2,6 +2,9 @@ const express = require('express')
 const router = express.Router()
 const usersController = require('../controllers/usersController')
 
+const verifyJWT = require('../middleware/verifyJWT')
+
+router.use(verifyJWT)
 /*this is regx syntax ambot unsa na basta ^ = beginning of string $ = end of string
 
 '^/$|/index(.html)?' = kani kay if si user nahan '/' ra or root. or kung "/" + index or /+index+HTML
