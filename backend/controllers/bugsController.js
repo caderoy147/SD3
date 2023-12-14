@@ -29,37 +29,42 @@ const getAllBugs = asyncHandler(async (req, res) => {
 // @route POST /bugs
 // @access Private
 const createNewBug = asyncHandler(async (req, res) => {
-    const { user, severity, description, expectedResult, bugName, environment, reproduction, actualResult } = req.body;
+    const { qa, dev, manager, team, severity, description, expectedResult, bugName, environment, reproduction, actualResult } = req.body;
   
     // Confirm data
-    if (!user || !severity || !description || !expectedResult || !bugName || !environment || !reproduction || !actualResult) {
+    if (!qa || !dev || !team || !severity || !description || !expectedResult || !bugName || !environment || !reproduction || !actualResult) {
       return res.status(400).json({ message: 'All fields are required' });
     }
   
     let bugData = {
-        user, 
-        severity, 
-        description, 
-        expectedResult, 
-        bugName, 
-        environment, 
-        reproduction, 
-        actualResult
+      qa,
+      dev,
+      manager,
+      team,
+      severity,
+      description,
+      expectedResult,
+      bugName,
+      environment,
+      reproduction,
+      actualResult,
+    };
+  
+    if (req.file) {
+      bugData.bugProof = req.file.path;
     }
-
-    if(req.file){
-        bugData.bugProof = req.file.path;
-    }
+  
     // Create and store the new bug
     const bug = await Bug.create(bugData);
   
-    if (bug) { // Created
+    if (bug) {
+      // Created
       return res.status(201).json({ message: 'New bug report created' });
     } else {
       return res.status(400).json({ message: 'Invalid bug report data received' });
     }
   });
-
+  
 // @desc Update a note
 // @route PATCH /notes
 // @access Private

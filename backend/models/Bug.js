@@ -1,12 +1,26 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
 
 const bugSchema = new mongoose.Schema(
   {
-    user:{
+    qa: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: 'User'
+      ref: 'User',
+    },
+    dev: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'User',
+    },
+    manager: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+    team: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'Team',
     },
     bugNumber: {
       type: String,
@@ -14,48 +28,49 @@ const bugSchema = new mongoose.Schema(
       unique: true,
       required: true,
     },
-    severity:{
+    severity: {
       type: String,
-      required: true
+      required: true,
     },
-    description:{
+    description: {
       type: String,
-      required: true
+      required: true,
     },
-    expectedResult:{
+    expectedResult: {
       type: String,
-      required: true
+      required: true,
     },
-    bugName:{
+    bugName: {
       type: String,
-      required: true
+      required: true,
     },
-    environment:{
+    environment: {
       type: String,
-      required: true
+      required: true,
     },
-    reproduction:{
+    reproduction: {
       type: String,
-      required: true
+      required: true,
     },
-    actualResult:{
+    actualResult: {
       type: String,
-      required: true
+      required: true,
     },
-    status:{
+    status: {
       type: String,
-      default:"OPEN"
+      default: 'OPEN',
     },
-    remarks:{
+    remarks: {
       type: String,
-      default: "In Progress"
+      default: 'In Progress',
     },
-    bugProof:{
-      type: String
-    }
+    bugProof: {
+      type: String,
+    },
   },
   {
-  timestamps: true
+    timestamps: true,
   }
-)
-module.exports = mongoose.model('Bug', bugSchema)
+);
+
+module.exports = mongoose.model('Bug', bugSchema);

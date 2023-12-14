@@ -1,14 +1,20 @@
-const express = require('express')
-const router = express.Router()
-const teamcontroller = require('../controllers/teamcontroller')
-const verifyJWT = require('../middleware/verifyJWT')
+const express = require('express');
+const router = express.Router();
+const teamController = require('../controllers/teamcontroller');
+const verifyJWT = require('../middleware/verifyJWT');
 
-router.use(verifyJWT)
+router.use(verifyJWT);
 
+// Teams API
 router.route('/')
- .post(teamcontroller.createTeam)
- .get(teamcontroller.getallTeam)
- .delete(teamcontroller.deleteTeam)
- .patch(teamcontroller.updateTeam)
- 
-module.exports = router
+  .post(teamController.createTeam)
+  .get(teamController.getallTeam)
+  .delete(teamController.deleteTeam);
+
+// Update a specific team
+router.patch('/:teamId', teamController.updateTeam);
+
+// Add bugs to a specific team
+router.post('/:teamId/bugs', teamController.addBugsToTeam);
+
+module.exports = router;
