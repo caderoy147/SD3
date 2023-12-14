@@ -18,7 +18,7 @@ const getAllBugs = asyncHandler(async (req, res) => {
     // See Promise.all with map() here: https://youtu.be/4lqJBBEpjRE 
     // You could also do this with a for...of loop
     const bugsWithUser = await Promise.all(bugs.map(async (bug) => {
-        const user = await User.findById(bug.user).lean().exec()
+        const user = await User.findById(bug.dev).lean().exec()
         return { ...bug, username: user.username }
     }))
 
