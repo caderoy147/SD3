@@ -29,7 +29,7 @@ const getAllBugs = asyncHandler(async (req, res) => {
 // @route POST /bugs
 // @access Private
 const createNewBug = asyncHandler(async (req, res) => {
-    const { qa, dev, manager, team, severity, description, expectedResult, bugName, environment, reproduction, actualResult } = req.body;
+    const { qa, dev, manager, team, severity, description, expectedResult, bugName, environment, reproduction, actualResult,remarks } = req.body;
   
     // Confirm data
     if (!qa || !dev || !team || !severity || !description || !expectedResult || !bugName || !environment || !reproduction || !actualResult) {
@@ -48,6 +48,7 @@ const createNewBug = asyncHandler(async (req, res) => {
       environment,
       reproduction,
       actualResult,
+      remarks
     };
   
     if (req.file) {
